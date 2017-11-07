@@ -1,0 +1,274 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US
+% letter paper)
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+\usepackage{hyperref} % Allows the use of hyperlinks
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{makecell}
+\usepackage{diagbox}
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\usepackage[utf8]{inputenc} % Spanish characters
+\usepackage{amsmath} % Allows align
+\usepackage{listings}	% Allows code 
+\usepackage{float} % Allows code 
+\usepackage{subfig}
+
+
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+
+% Change line spacing here, Palatino benefits from a slight increase by default
+\linespread{1.05}
+
+\makeatletter
+% Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand\@biblabel[1]{\textbf{#1.}}
+
+% Reduce the space between items in the itemize and enumerate environments and
+% the bibliography
+\renewcommand{\@listI}{\itemsep=0pt}
+
+% Customize the title - do not edit title and author name here, see the TITLE
+% block below
+\renewcommand{\maketitle}{
+\begin{flushright} % Right align
+% Increase the font size of the title
+  {\LARGE\@title}
+  % Some vertical space between the title and author name
+  \vspace{50pt}
+
+  % Author name
+  {\large\@author}\\
+  % Date
+  \@date
+  % Some vertical space between the author block and abstract
+  \vspace{40pt}
+\end{flushright}
+}
+
+% ------------------------------------------------------------------------------
+%	TITLE
+% ------------------------------------------------------------------------------
+
+\title{\textbf{Trabajo Práctico 2\\ Selección de variables}}
+
+\author{
+	\textsc{Agustín Mista}\\
+	\textit{Universidad Nacional de Rosario}\\
+ 	\textit{Tópicos de Minería de Datos}
+}
+
+\date{Rosario, 6 de Noviembre de 2017}
+
+% ------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+% ------------------------------------------------------------------------------
+% ABSTRACT
+% ------------------------------------------------------------------------------
+
+\vspace{20pt} % Some vertical space between the abstract and first section
+
+% ------------------------------------------------------------------------------
+%	ESSAY BODY
+% ------------------------------------------------------------------------------
+
+\pagebreak
+
+% ------------------------------------------------
+\section*{Apartado 2.}
+\textit{Aplique los 4 métodos (los 3 desarrollados más el forward) a los dos
+datasets de ejemplo (datosA y datosB). }\\
+
+% \vspace{20pt}
+
+Para este apartado se utilizaron dos datasets sintetizados a partir de variables
+independientes con ruido uniforme. La clase correspondiente a cada muestra esta
+definida por un criterio distinto en ambos casos. A continuación se presentan
+ambos datasets junto con los resultados obtenidos al seleccionar las variables
+más importantes usando los distintos métodos estudiados.
+
+\subsection*{Dataset A}
+
+Este dataset posee 2000 muestras con 10 features cada una. Cada muestra es
+generada usando ruido uniforme en el conjunto $[-1, 1]$, las cuales son
+clasificadas usando el siguiente criterio:
+
+\begin{itemize}
+\item 50\% de los datos $\mapsto$ signo de la variable 8.  
+\item 20\% de los datos $\mapsto$ signo de la variable 6.  
+\item 10\% de los datos $\mapsto$ signo de la variable 4.  
+\item 5\%  de los datos $\mapsto$ signo de la variable 2.  
+\end{itemize}
+
+Dado este criterio de clasificación, podemos observar que la feature más
+importante es la número 8, ya que logra clasificar al 50\% de los datos por si
+misma, seguida de las features 6, 4 y 2 respectivamente. El resto de las
+features no aporta datos, por lo cual sería deseable identificarlas y
+eliminarlas de nuestro dataset.
+
+A continuación se muestran los resultados obtenidos al seleccionar las features
+más importantes para este dataset usando los métodos vistos en el curso.
+
+\vspace{20pt}
+\begin{center}
+\begin{tabular}{ c   c | c | c | c | c | c | c | c | c | c | c }
+  \multirowcell{3}{Forward\\ Selection}
+  & RF  & 8 & 6 & 2 & 9 & 1 & 4 & 10& 3 & 7 & 5 \\
+  & LDA & 8 & 9 & 1 & 5 & 10& 7 & 3 & 2 & 4 & 6 \\ 
+  & SVM & 8 & 9 & 10& 3 & 1 & 5 & 2 & 7 & 4 & 6 \\
+  \hline
+  \multirowcell{3}{Backward\\ Elimination}
+  & RF  & 8 & 9 & 10& 7 & 3 & 5 & 2 & 4 & 1 & 6 \\ 
+  & LDA & 8 & 9 & 1 & 10& 3 & 7 & 5 & 2 & 4 & 6 \\ 
+  & SVM & 8 & 1 & 5 & 2 & 4 & 10& 3 & 9 & 7 & 6 \\
+  \hline
+  \multirowcell{2}{Recursive Feature\\ Elimination}
+  & RF  & 8 & 6 & 4 & 3 & 5 & 1 & 2 & 7 & 10& 9 \\ 
+  & SVM & 8 & 6 & 4 & 2 & 7 & 9 & 10& 5 & 3 & 1 \\
+  \hline
+  Kruskal-Wallis & & 8 & 6 & 4 & 2 & 7 & 9 & 5 & 10& 3 & 1 \\
+\end{tabular}
+\end{center}
+\vspace{20pt}
+
+A partir de la tabla anterior podemos destacar algunos aspectos interesantes. En
+principio, todos los métodos logran identificar a la feature número 8 como la de
+mayor importancia.
+
+Los métodos basados en Forward Selection y Backward Elimination obtuvieron los
+peores resultados, ya que buscan encontrar relación entre las distintas
+features, y en este caso todas son independientes. Junto a esto, estos métodos
+además presentan una performance temporal muy pobre.
+
+En el otro extremo, el filtro basado en Kruskal-Wallis obtuvo el mejor
+resultado, ordenando correctamente las cuatro features con mayor aporte de
+información, debido a que éste analiza cada una de ellas de manera independiente
+y no considera el caso de que algún par de features se encuentre correlacionada.
+Todo esto junto a una performance muy buena.
+
+Finalmente, los métodos basados en Recursive Feature Elimination también
+obtuvieron muy buenos resultados, ordenando de manera ideal las features de
+nuestro dataset para el caso de la estimación basada en Support Vector
+Machines---y de manera extremadamente similar al método de Kruskal-Wallis---,
+mientras que usando una estimación basada en Random Forest se obtiene un
+resultado casi ideal, con solo una feature mal ordenada.
+
+\subsection*{Dataset B}
+
+Este dataset posee 2000 muestras con 8 features cada una y, al igual que el
+dataset anterior, cada muestra es generada usando ruido uniforme en el conjunto
+$[-1, 1]$. En este caso, la clasificación de cada muestra está dada por el
+\emph{xor} del signo de las primeras dos features. Además se hace que las
+features número 3 y 4 tengan un 50\% de correlación con la clase de cada
+muestra. De esta manera, las features 1 y 2 por separado no son suficientes para
+predecir la clase de cada muestra---se necesita considerarlas en conjunto. Por
+otro lado, las features 3 y 4 sólo son capaces de predecir el 50\% de las
+muestras por lo que no resultan buenos predictores para este dataset.
+
+A continuación se muestran los resultados obtenidos al seleccionar las features
+más importantes para este dataset usando los métodos vistos en el curso.
+
+\vspace{20pt}
+\begin{center}
+\begin{tabular}{ c   c | c | c | c | c | c | c | c | c }
+  \multirowcell{3}{Forward\\ Selection}
+  & RF  & 3 & 4 & 8 & 2 & 1 & 5 & 7 & 6 \\
+  & LDA & 4 & 7 & 6 & 2 & 1 & 5 & 8 & 3 \\ 
+  & SVM & 4 & 6 & 7 & 8 & 2 & 3 & 5 & 1 \\
+  \hline
+  \multirowcell{3}{Backward\\ Elimination}
+  & RF  & 1 & 2 & 6 & 8 & 5 & 7 & 4 & 3 \\
+  & LDA & 3 & 2 & 8 & 6 & 7 & 1 & 5 & 4 \\
+  & SVM & 4 & 6 & 2 & 7 & 8 & 1 & 3 & 5 \\ 
+  \hline
+  \multirowcell{2}{Recursive Feature\\ Elimination}
+  & RF  & 2 & 1 & 3 & 4 & 8 & 7 & 5 & 6 \\
+  & SVM & 3 & 4 & 6 & 1 & 5 & 2 & 7 & 8 \\
+  \hline
+  Kruskal-Wallis & & 3 & 4 & 1 & 7 & 2 & 8 & 5 & 6 \\
+\end{tabular}
+\end{center}
+\vspace{20pt}
+
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+
+% ------------------------------------------------
+
+\section*{Apartado 3.}
+\textit{Prepare un dataset del problema diagonal del práctico 1 con 10
+variables, 50 puntos por clase y sigma igual a dos. Agregue 90 variables de
+ruido uniforme. Aplique los 4 métodos. Repita el experimento 30 veces. Calcule
+para cada método el porcentaje de aciertos en el ranking (cuántas de las 10
+variables “originales” están en los primeros 10 lugares).}\\
+
+\vspace{20pt}
+
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah 
+
+\vspace{20pt}
+\begin{center}
+\begin{tabular}{ c   c | c }
+  \multirowcell{3}{Forward\\ Selection}
+  & RF  & 42\% \\
+  & LDA & 52\% \\ 
+  & SVM & 43\% \\
+  \hline
+  \multirowcell{3}{Backward\\ Elimination}
+  & RF  & 39\% \\
+  & LDA & 39\% \\
+  & SVM & 48\% \\
+  \hline
+  \multirowcell{2}{Recursive Feature\\ Elimination}
+  & RF  & 91\% \\
+  & SVM & 67\% \\
+  \hline
+  Kruskal-Wallis & & 99\% \\
+\end{tabular}
+\end{center}
+\vspace{20pt}
+
+some blah more blah some blah more blah some blah more blah some blah more blah
+some blah more blah some blah more blah some blah more blah some blah more blah 
+
+% ------------------------------------------------
+
+\end{document}
