@@ -216,14 +216,36 @@ más importantes para este dataset usando los métodos vistos en el curso.
 \end{center}
 \vspace{20pt}
 
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
+Si analizamos la tabla anterior, podemos observar como este dataset requiere del
+uso de métodos que consideren las posibles correlaciones entre distintas
+features.
+
+El resultado obtenido usando el filtro basado en Kruskal-Wallis es incapaz de
+reconocer a las features 1 y 2 como importantes, ya que las analiza por
+separado, y de esta manera ninguna de ellas aporta información útil para
+clasificar nuestro dataset. Luego, el mismo selecciona como importantes las
+features 3 y 4, las cuales por separado son las únicas que poseen información
+útil.
+
+Por otro lado, los únicos métodos capaces de rankear correctamente a las
+features 1 y 2 fueron el de Backward Elimination y el de Recursive Feature
+Elimination, ambos usando Random Forests.
+
+Ĺos métodos basados en Forward Selection no obtuvieron resultados muy
+favorables, debido a que en cada paso seleccionan de manera greeedy la variable
+que aporta mayor ganancia de información. De esta manera, en los primeros pasos
+tienden a seleccionar a las variables que estan levemente correlacionadas con la
+clase de cada muestra.
+
+Como conclusión de este apartado, podemos notar que el problema de asignar el
+grado de importancia a cada feature presente en un dataset no es sencillo, y no
+existe un método mágico que funcione lo suficientemente bien en todos los casos,
+por lo cual resultaría conveniente aplicar distintos métodos y/o conocer la
+naturaleza del dataset a la hora de seleccionar cuales features serán utilizadas
+y cuales descartadas.
 
 % ------------------------------------------------
-
+\pagebreak
 \section*{Apartado 3.}
 \textit{Prepare un dataset del problema diagonal del práctico 1 con 10
 variables, 50 puntos por clase y sigma igual a dos. Agregue 90 variables de
@@ -233,16 +255,16 @@ variables “originales” están en los primeros 10 lugares).}\\
 
 \vspace{20pt}
 
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah 
+Para este apartado generamos datasets basados en el generador de datos
+\emph{diagonal} con 100 muestras de 10 features cada una, a los cuales se le
+agregaron 90 features de ruido uniforme en cada caso.
+
+Cada dataset fue evaluado 30 veces con cada uno de los métodos de ranking de
+features vistos anteriormente. Luego se calculó para cada método el porcentaje
+medio de aciertos, es decir, la cantidad de veces que cáda método logró
+seleccionar a las diez variables relevantes del dataset en los diez primeros
+lugares del ranking. Los resultados de este experimento se muestran a
+continuación.
 
 \vspace{20pt}
 \begin{center}
@@ -266,8 +288,23 @@ some blah more blah some blah more blah some blah more blah some blah more blah
 \end{center}
 \vspace{20pt}
 
-some blah more blah some blah more blah some blah more blah some blah more blah
-some blah more blah some blah more blah some blah more blah some blah more blah 
+Como se puede observar en la tabla anterior, el mejor resultado fue el obtenido
+mediante el filtro basado en Kruskal-Wallis, ya que todas las features
+relevantes de este dataset son independientes entre sí.
+
+Por otro lado, los wrappers basados en Forward Selection y Backward Elimination
+obtuvieron resultados relativamente malos, dado que los mismos intentan
+encontrar una correlación entre las distintas features, la cual no existe en
+nuestro dataset, por lo que son propensos a guiarse por la gran cantidad de
+ruido que introducimos en el mismo.
+
+Finalmente, los resultados obtenidos para el caso de los métodos basados en
+Recursive Feature Elimination dependen en gran medida del modelo subyacente
+utilizado. En el caso de Random Forests, el ranking obtenido es casi ideal,
+puesto que este modelo se ajusta muy bien a los problemas con features
+independientes. En cambio, aquel basado en Support Vector Machines con kernel
+lineal obtuvo un resultado bastante peor, dado que el kernel utilizado se ve
+altamente afectado por la gran cantidad de ruido que fue introducido al dataset.
 
 % ------------------------------------------------
 
