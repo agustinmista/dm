@@ -1,0 +1,368 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Thin Sectioned Essay                                                         %
+% LaTeX Template                                                               %
+% Version 1.0 (3/8/13)                                                         %
+%                                                                              % 
+% This template has been downloaded from:                                      %
+% http://www.LaTeXTemplates.com                                                %
+%                                                                              % 
+% Original Author:                                                             %
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:                 %
+% Vel (vel@latextemplates.com)                                                 %
+%                                                                              % 
+% License:                                                                     %
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)          %
+%                                                                              % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+% Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US
+% letter paper)
+\documentclass[a4paper, 11pt]{article}
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage[utf8]{inputenc} % Spanish characters
+\usepackage[T1]{fontenc}    % Required for accented characters
+\usepackage{graphicx}       % Required for including pictures
+\usepackage{wrapfig}        % Allows in-line images
+\usepackage{hyperref}       % Allows the use of hyperlinks
+\usepackage{mathpazo}       % Use the Palatino font
+\usepackage{amsmath}        % Allows align
+\usepackage{listings}      	% Allows code 
+\usepackage{float}         
+\usepackage{subfig}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage{makecell}
+\usepackage{diagbox}
+
+% ------------------------------------------------------------------------------
+
+\lstset{basicstyle=\footnotesize\ttfamily, breaklines=true}
+
+\graphicspath{{../plots/}}
+
+\captionsetup[table]{name=Tabla}
+
+% Change line spacing here, Palatino benefits from a slight increase by default
+\linespread{1.05}
+
+\makeatletter
+
+% ------------------------------------------------------------------------------
+
+% Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand\@biblabel[1]{\textbf{#1.}}
+
+% Reduce the space between items in the itemize and enumerate environments and
+% the bibliography
+\renewcommand{\@listI}{\itemsep=0pt}
+
+% Customize the title - do not edit title and author name here, see the TITLE
+% block below
+\renewcommand{\maketitle}{
+  \begin{flushright} % Right align
+    % Increase the font size of the title
+    {\LARGE\@title}
+    % Some vertical space between the title and author name
+    \vspace{50pt}
+
+    % Author name
+    {\large\@author}\\
+    % Date
+    \@date
+    % Some vertical space between the author block and abstract
+    \vspace{40pt}
+  \end{flushright}
+}
+
+% ------------------------------------------------------------------------------
+%	TITLE
+% ------------------------------------------------------------------------------
+
+\title{\textbf{Trabajo Práctico Final\\ Análisis completo de un conjunto de
+    datos}}
+
+\author{
+  \textsc{Agustín Mista}\\
+  \textit{Universidad Nacional de Rosario}\\
+  \textit{Tópicos de Minería de Datos}
+}
+
+\date{Rosario, 28 de Diciembre de 2017}
+
+% ------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+\pagebreak
+
+% ------------------------------------------------------------------------------
+%	ESSAY BODY
+% ------------------------------------------------------------------------------
+
+\section*{Origen de los datos}
+
+Para este trabajo final utilizamos el dataset \textit{Spam
+  Base}\footnote{\url{https://archive.ics.uci.edu/ml/datasets/spambase}},
+orientado a la clasificación de emails en deseados (\textit{Ham}) y no-deseados
+(\textit{Spam}). El mismo fue creado utilizando una base de datos de emails
+reales de la compañia Hewlett-Packard en 1998 y estudiado en el artículo
+Spam!\footnote{Cranor, Lorrie F., LaMacchia, Brian A. Spam! Communications of
+  the ACM, 41(8):74-83, 1998.}.
+
+El concepto de Spam es diverso: publicidades de productos/páginas web, esquemas
+piramidales, cadenas de correo, pornografía, etc. La prevención (mediante
+filtrado) de esta clase de emails es una tarea que involucra reconocer ciertos
+patrones en el contenido de los mails entrantes. Debido a ésto, resulta
+interesante poseer de un conjunto previamente clasificado de correo entrante del
+que podamos extraer estos patrones con el fin de crear filtros de Spam
+personalizados, filtrando efectivamente todo el correo no deseado, con el mínimo
+número posible de falsos positivos.
+
+Este dataset cuenta con 4601 muestras, cada una con 57 features que describen la
+frecuencia de aparición de ciertas palabras (prefijo \texttt{word}) o caracteres
+(prefijo \texttt{char}) clave obtenidos a partir de los emails analizados, junto
+con las frecuencias de aparición de secuencias de caracterese capitalizados
+(prefijo \texttt{capital}).
+
+A continuación se muestra la lista de features de este dataset, ordenadas según
+el índice de su respectiva columna en los datos.
+
+\begin{multicols}{4}
+\begin{enumerate}
+\item \texttt{word\_make}         
+\item \texttt{word\_address}      
+\item \texttt{word\_all}          
+\item \texttt{word\_3d}           
+\item \texttt{word\_our}          
+\item \texttt{word\_over}         
+\item \texttt{word\_remove}       
+\item \texttt{word\_internet}     
+\item \texttt{word\_order}        
+\item \texttt{word\_mail}         
+\item \texttt{word\_receive}      
+\item \texttt{word\_will}         
+\item \texttt{word\_people}       
+\item \texttt{word\_report}       
+\item \texttt{word\_addresses}    
+\item \texttt{word\_free}         
+\item \texttt{word\_business}     
+\item \texttt{word\_email}        
+\item \texttt{word\_you}          
+\item \texttt{word\_credit}       
+\item \texttt{word\_your}         
+\item \texttt{word\_font}         
+\item \texttt{word\_000}          
+\item \texttt{word\_money}        
+\item \texttt{word\_hp}           
+\item \texttt{word\_hpl}          
+\item \texttt{word\_george}       
+\item \texttt{word\_650}          
+\item \texttt{word\_lab}          
+\item \texttt{word\_labs}         
+\item \texttt{word\_telnet}       
+\item \texttt{word\_857}          
+\item \texttt{word\_data}         
+\item \texttt{word\_415}          
+\item \texttt{word\_85}           
+\item \texttt{word\_technology}   
+\item \texttt{word\_1999}         
+\item \texttt{word\_parts}        
+\item \texttt{word\_pm}           
+\item \texttt{word\_direct}       
+\item \texttt{word\_cs}           
+\item \texttt{word\_meeting}      
+\item \texttt{word\_original}     
+\item \texttt{word\_project}      
+\item \texttt{word\_re}           
+\item \texttt{word\_edu}          
+\item \texttt{word\_table}        
+\item \texttt{word\_conference}   
+\item \texttt{char\_;}           
+\item \texttt{char\_(}            
+\item \texttt{char\_[}           
+\item \texttt{char\_!}            
+\item \texttt{char\_\$}            
+\item \texttt{char\_\#}     
+\item \texttt{capital\_average} 
+\item \texttt{capital\_longest} 
+\item \texttt{capital\_total}   
+\end{enumerate}
+\end{multicols}
+
+\paragraph{Preprocesamiento}
+
+En las siguientes secciones se muestran resultados obtenidos a partir tanto del
+dataset original, como de alguna combinación de preprocesamientos logarítmico
+(\texttt{log()}), escalado (\texttt{scale()}) o Principal Component Analysis
+(\texttt{prcomp()}), los cuales se detallan en cada caso particuar.
+
+% ------------------------------------------------------------------------------
+
+\section*{Visualización de los datos}
+
+Ya que este dataset cuenta con un gran número de features, la manera más
+intuitiva de visualizar los datos en un gráfico de menor dimensionalidad es
+efectuar una PCA sobre los mismos. A continuación se muestra este análisis sobre
+nuestros datos, utilizando colores para separar las clases de emails y etiquetas
+para señalar hacia dónde y con qué relevancia aporta evidencia cada feature.
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][Principal Component Analysis]
+    {\includegraphics[width=\textwidth]{{spam.pca.loadings}.png}}
+  }
+\end{figure}
+
+A primera vista, podemos notar la existencia de dos ejes sobre los cuales se
+situan las features más relevantes de nuestro dataset, y que se corresponden con
+aquellos emails deaseados o basura cada caso. Ambos ejes se se unen en el origen
+de nuestro gráfico, formando una nube densa de muestras donde no existe
+suficiente evidencia por parte de las features de menor relevancia como para
+lograr separar cada muestra según su clase de manera efectiva. Suponemos que la
+mayoría de los errores de clasificación deberían producirse en esa zona.
+
+Si ampliamos el eje correspondiente al correo deseado, podemos observar como la
+presencia de palabras como ``telnet'', ``lab'', ``hp'' o códigos de área
+telefónica son buenos indicadores de que estamos ante un correo deseado. Resulta
+evindente que estas palabras están relacionadas directamente con los intereses
+de la empresa de donde provienen los emails analizados, por lo que debería
+usarse un dataset de origen más amplio si se desea construir un filtro de Spam
+efectivo en entornos más diversos.
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=\textwidth]
+      {{spam.pca.loadings.ham}.png}}}
+\end{figure}
+
+Si en cambio ampliamos el eje correspondiente al correo no deseado, podemos
+observar como la presencia de palabras como ``money'', ``free'', ``your'',
+caracteres como ``\$'', ``!'' o largas secuencias de caracteres capitalizados
+son buenos indicadores de correo basura. 
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=\textwidth]
+      {{spam.pca.loadings.spam}.png}}}
+\end{figure}
+
+% ------------------------------------------------------------------------------
+
+\section*{Análisis de features relevantes}
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec hendrerit tempor
+tellus. Donec pretium posuere tellus. Proin quam nisl, tincidunt et, mattis
+eget, convallis nec, purus. Cum sociis natoque penatibus et magnis dis
+parturient montes, nascetur ridiculus mus. Nulla posuere. Donec vitae dolor.
+Nullam tristique diam non turpis. Cras placerat accumsan nulla. Nullam rutrum.
+Nam vestibulum accumsan nisl.
+
+\vspace{20pt}
+\begin{center}
+\begin{tabular}{c  c | c | c | c | c | c | c | c | c | c | c}  
+  \multirowcell{3}{Forward\\ Selection}
+  & RF  & 53 & 7  & 52 & 57 & 19 & 50 & 16 & 56 & 25 & 46 \\ 
+  & LDA & 53 & 52 & 56 & 7  & 25 & 8  & 5  & 21 & 46 & 42 \\ 
+  & SVM & 53 & 7  & 52 & 25 & 57 & 46 & 16 & 21 & 5  & 8  \\
+  \hline
+  \multirowcell{3}{Backward\\ Elimination}
+  & RF  & 53 & 7  & 52 & 56 & 25 & 5  & 46 & 27 & 19 & 16 \\ 
+  & LDA & 52 & 57 & 7  & 25 & 24 & 23 & 16 & 21 & 46 & 8  \\
+  & SVM & 53 & 7  & 52 & 25 & 57 & 46 & 5  & 27 & 42 & 16 \\ 
+  \hline
+  \multirowcell{2}{Recursive Feature\\ Elimination}
+  & RF  & 7  & 25 & 53 & 52 & 55 & 16 & 46 & 21 & 27 & 5  \\
+  & SVM & 27 & 41 & 25 & 46 & 26 & 42 & 57 & 53 & 7  & 16 \\ 
+  \hline
+  Kruskal-Wallis & & 52 & 53 & 7  & 56 & 16 & 21 & 55 & 24 & 57 & 23 \\ 
+\end{tabular}
+\end{center}
+\vspace{20pt}
+
+% ------------------------------------------------------------------------------
+
+\section*{Clustering}
+
+Pellentesque dapibus suscipit ligula. Donec posuere augue in quam. Etiam vel
+tortor sodales tellus ultricies commodo. Suspendisse potenti. Aenean in sem ac
+leo mollis blandit. Donec neque quam, dignissim in, mollis nec, sagittis eu,
+wisi. Phasellus lacus. Etiam laoreet quam sed arcu. Phasellus at dui in ligula
+mollis ultricies. Integer placerat tristique nisl. Praesent augue. Fusce
+commodo. Vestibulum convallis, lorem a tempus semper, dui dui euismod elit,
+vitae placerat urna tortor vitae lacus. Nullam libero mauris, consequat quis,
+varius et, dictum id, arcu. Mauris mollis tincidunt felis. Aliquam feugiat
+tellus ut neque. Nulla facilisis, risus a rhoncus fermentum, tellus tellus
+lacinia purus, et dictum nunc justo sit amet elit.
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=\textwidth]
+      {{spam.km.o}.png}}}
+\end{figure}
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=\textwidth]
+      {{spam.km.lsp}.png}}}
+\end{figure}
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=\textwidth]
+      {{spam.km.l}.png}}}
+\end{figure}
+
+% ------------------------------------------------------------------------------
+
+\section*{Clasificación}
+
+Nullam eu ante vel est convallis dignissim. Fusce suscipit, wisi nec facilisis
+facilisis, est dui fermentum leo, quis tempor ligula erat quis odio. Nunc porta
+vulputate tellus. Nunc rutrum turpis sed pede. Sed bibendum. Aliquam posuere.
+Nunc aliquet, augue nec adipiscing interdum, lacus tellus malesuada massa, quis
+varius mi purus non odio. Pellentesque condimentum, magna ut suscipit hendrerit,
+ipsum augue ornare nulla, non luctus diam neque sit amet urna. Curabitur
+vulputate vestibulum lorem. Fusce sagittis, libero non molestie mollis, magna
+orci ultrices dolor, at vulputate neque nulla lacinia eros. Sed id ligula quis
+est convallis tempor. Curabitur lacinia pulvinar nibh. Nam a sapien.
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \makebox[\textwidth][c]{
+    \subfloat[][]{\includegraphics[width=0.5\textwidth]
+      {{spam.boosting.error}.png}}}
+\end{figure}
+
+\begin{figure}[H]
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \subfloat[][]{\includegraphics[width=0.5\textwidth]
+    {{spam.svm.poly.error}.png}}
+  \captionsetup[subfigure]{justification=centering, labelformat=empty}
+  \subfloat[][]{\includegraphics[width=0.5\textwidth]
+    {{spam.svm.rbf.error}.png}}
+\end{figure}
+
+% \begin{figure}[H]
+% \captionsetup[subfigure]{justification=centering, labelformat=empty}
+%   \centering
+%   \subfloat[][SVM con kernel \texttt{polynomial}]
+%   {\includegraphics[width=0.5\textwidth]{{lampone.svm.poly.error}.png}}
+%   \subfloat[][SVM con kernel \texttt{radial}]
+%   {\includegraphics[width=0.5\textwidth]{{lampone.svm.rbf.error}.png}}
+% \end{figure}
+
+% ------------------------------------------------------------------------------
+
+\end{document}
